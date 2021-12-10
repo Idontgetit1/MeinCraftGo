@@ -34,7 +34,7 @@ func initGLFW() *glfw.Window {
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
-	var window_width, window_height int = 800, 800
+	var window_width, window_height int = 1270, 720
 	var window_name string = "MeinCraftGo"
 
 	//create window on secondary monitor
