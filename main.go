@@ -58,7 +58,6 @@ func draw(window *glfw.Window, program uint32) {
 	//swap buffers
 	window.SwapBuffers()
 	glfw.PollEvents()
-
 }
 
 
