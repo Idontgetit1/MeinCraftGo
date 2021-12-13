@@ -8,7 +8,6 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
-
 // initOpenGL initializes OpenGL -> returns program id
 func initOpenGL() uint32 {
 	if err := gl.Init(); err != nil {
@@ -55,11 +54,10 @@ func draw(window *glfw.Window, program uint32) {
 	//make screen red
 	gl.ClearColor(250.0/255.0, 119.0/255.0, 110.0/255.0, 1.0)
 
-	gl.Begin(gl.QUADS)
-	gl.Vertex2f(0, 0)
-	gl.Vertex2f(0, 1)
-	gl.Vertex2f(1, 1)
-	gl.Vertex2f(1, 0)
+	//create black Line in the middle of the screen
+	gl.Begin(gl.LINES)
+	gl.Vertex2f(0.0, 0.0)
+	gl.Vertex2f(1.0, 1.0)
 	gl.End()
 
 	//swap buffers
