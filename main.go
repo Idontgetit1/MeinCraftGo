@@ -4,7 +4,7 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/go-gl/gl/v4.6-core/gl"
+	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -54,6 +54,13 @@ func draw(window *glfw.Window, program uint32) {
 	gl.UseProgram(program)
 	//make screen red
 	gl.ClearColor(250.0/255.0, 119.0/255.0, 110.0/255.0, 1.0)
+
+	gl.Begin(gl.QUADS)
+	gl.Vertex2f(0, 0)
+	gl.Vertex2f(0, 1)
+	gl.Vertex2f(1, 1)
+	gl.Vertex2f(1, 0)
+	gl.End()
 
 	//swap buffers
 	window.SwapBuffers()
