@@ -4,9 +4,11 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/go-gl/gl/v2.1/gl"
+	"github.com/go-gl/gl/v4.1-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
+
+
 
 // initOpenGL initializes OpenGL -> returns program id
 func initOpenGL() uint32 {
@@ -33,7 +35,7 @@ func initGLFW() *glfw.Window {
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 
-	var window_width, window_height int = 1270, 720
+	var window_width, window_height int = 800, 800
 	var window_name string = "MeinCraftGo"
 
 	//create window on secondary monitor
@@ -54,11 +56,14 @@ func draw(window *glfw.Window, program uint32) {
 	//make screen red
 	gl.ClearColor(250.0/255.0, 119.0/255.0, 110.0/255.0, 1.0)
 
-	//create black Line in the middle of the screen
-	gl.Begin(gl.LINES)
-	gl.Vertex2f(0.0, 0.0)
-	gl.Vertex2f(1.0, 1.0)
-	gl.End()
+
+	//draw 10x10 grid with random quads
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			draw_quad(window, program, float32(i), float32(j))
+		}
+	}
+
 
 	//swap buffers
 	window.SwapBuffers()
@@ -85,7 +90,6 @@ func main(){
 	program := initOpenGL()
 
 	window.SetKeyCallback(key_callback)
-
 	
 	for !window.ShouldClose() {
 
