@@ -56,13 +56,7 @@ func draw(window *glfw.Window, program uint32) {
 	//make screen red
 	gl.ClearColor(250.0/255.0, 119.0/255.0, 110.0/255.0, 1.0)
 
-
-	//draw 10x10 grid with random quads
-	for i := 0; i < 10; i++ {
-		for j := 0; j < 10; j++ {
-			draw_quad(window, program, float32(i), float32(j))
-		}
-	}
+	
 
 
 	//swap buffers
@@ -80,6 +74,28 @@ func key_callback(window *glfw.Window, key glfw.Key, scancode int, action glfw.A
 	}
 }
 
+func CompileShader(shaderType int, source *string) uint32{
+	id := gl.CreateShader(gl.VERTEX_SHADER)
+	csource := gl.Str(*source)
+	gl.ShaderSource(id, 1, &csource, nil)
+	gl.CompileShader(id)
+	
+	return id
+}
+
+func CreateShader(vertexShader *string, fragmentShader *string) uint32 {
+	program := gl.CreateProgram()
+	vs := CompileShader(gl.VERTEX_SHADER, vertexShader)
+	fs := CompileShader(gl.FRAGMENT_SHADER, fragmentShader)
+
+	gl.AttachShader(program, vs)
+	gl.AttachShader(program, fs)
+	gl.LinkProgram(program)
+	gl.ValidateProgram(program)
+
+	return program
+}
+
 //main function
 func main(){
 	runtime.LockOSThread()
@@ -91,9 +107,30 @@ func main(){
 
 	window.SetKeyCallback(key_callback)
 	
-	for !window.ShouldClose() {
 
-		draw(window, program)
+	var positions = []float32{
+		-0.5, -0.5,
+		0.0, 0.5,
+		0.5, -0.5,
+	}
+
+	var buffer uint32
+	gl.GenBuffers(1, &buffer)
+	gl.BindBuffer(gl.ARRAY_BUFFER, buffer)
+	gl.BufferData(gl.ARRAY_BUFFER, 4*len(positions), gl.Ptr(positions), gl.STATIC_DRAW)
+
+	
+	gl.EnableVertexAttribArray(0)
+	gl.VertexAttribPointer(0, 2, gl.FLOAT, false, 0, gl.PtrOffset(0))
+	
+
+	for !window.ShouldClose() {
+		gl.Clear(gl.COLOR_BUFFER_BIT)
+		gl.UseProgram(program)
+		gl.DrawArrays(gl.TRIANGLES, 0, 3)
+
+		window.SwapBuffers()
+		glfw.PollEvents()
 	}
 
 }
